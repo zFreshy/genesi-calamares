@@ -19,7 +19,7 @@ if [ -e "$limine_snapper_config" ]; then
     cat << 'EOF' > /etc/mkinitcpio.conf.d/10-limine-snapper-sync.conf
 # This hook is necessary for the proper loading of Limine snapshots.
 # Please do not touch unless you know what you are doing.
-HOOKS+=(btrfs-overlayfs)
+HOOKS+=(sd-btrfs-overlayfs)
 EOF
 fi
 
