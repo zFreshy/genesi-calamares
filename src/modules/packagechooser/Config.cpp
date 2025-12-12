@@ -19,6 +19,7 @@
 #include <memory>
 #endif
 
+#include <QDir>
 #include "GlobalStorage.h"
 #include "JobQueue.h"
 #include "compat/Variant.h"
@@ -270,6 +271,12 @@ fillModel( PackageListModel* model, const QVariantList& items )
         if ( item_map.isEmpty() )
         {
             cWarning() << "PackageChooser entry" << item_index << "is not valid.";
+            continue;
+        }
+
+        if (item_map.contains("efiOnly") && !QDir( "/sys/firmware/efi/efivars" ).exists())
+        {
+            cWarning() << "PackageChooser entry" << item_index << "is only for EFI systems.";
             continue;
         }
 
