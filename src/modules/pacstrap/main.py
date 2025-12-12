@@ -91,20 +91,45 @@ def run():
     else:
         return "No configuration found", "Aborting due to missing configuration"
 
+
+    bootloader = libcalamares.globalstorage.value("packagechooser_bootloader")
+
+    if not bootloader:
+        libcalamares.utils.warning("Failed to determine bootloader type")
+        return "No bootloader selected", "Aborting due to missing configuration"
+
+    libcalamares.utils.debug("Current bootloader: {!s}".format(bootloader))
+
     curr_filesystem = subprocess.run(["findmnt", "-ln", "-o", "FSTYPE", root_mount_point], stdout=subprocess.PIPE).stdout.decode('utf-8')
     libcalamares.utils.debug("Current filesystem: {!s}".format(curr_filesystem))
     is_root_on_zfs = (curr_filesystem == "zfs\n")
     is_root_on_btrfs = (curr_filesystem == "btrfs\n")
     is_root_on_bcachefs = (curr_filesystem == "bcachefs\n")
 
+    if bootloader == "grub":
+        base_packages += ["grub", "grub-hook", "cachyos-grub-theme", "os-prober"]
+    elif bootloader == "limine":
+        base_packages += ["limine", "limine-entry-tool"]
+    elif bootloader == "refind":
+        base_packages += ["refind"]
+    elif bootloader == "systemd-boot":
+        base_packages += ["systemd-boot-manager"]
+
     if (is_root_on_zfs):
         base_packages += ["zfs-utils", "linux-cachyos-zfs", "linux-cachyos-lts-zfs"]
     elif is_root_on_btrfs:
         libcalamares.utils.debug("Root on BTRFS")
-        base_packages += ["snapper", "limine-snapper-sync", "btrfs-assistant"]
+        if bootloader == "limine":
+            base_packages += ["snapper", "btrfs-assistant", "limine-snapper-sync" ]
+        elif bootloader == "grub":
+            base_packages += ["snapper", "btrfs-assistant", "grub-btrfs-support"]
+        elif bootloader == "refind":
+            base_packages += ["snapper", "btrfs-assistant", "refind-btrfs" ]
+
     elif is_root_on_bcachefs:
         libcalamares.utils.debug("Root on BCACHEFS")
         base_packages += ["bcachefs-tools", "bcachefs-dkms"]
+
 
     # run the pacstrap
     pacstrap_command = ["/etc/calamares/scripts/pacstrap_calamares", "-c", root_mount_point] + base_packages
@@ -119,6 +144,10 @@ def run():
     # copy files post install
     if "postInstallFiles" in libcalamares.job.configuration:
         files_to_copy = libcalamares.job.configuration["postInstallFiles"]
+
+        if bootloader == "grub":
+            files_to_copy.append("/etc/default/grub")
+
         for source_file in files_to_copy:
             if os.path.exists(source_file):
                 try:
