@@ -1108,9 +1108,9 @@ def prepare_bootloader(fw_type, install_hybrid_grub):
         install_secureboot(efi_directory)
     elif efi_boot_loader == "refind" and fw_type == "efi":
         install_refind(efi_directory)
-    elif efi_boot_loader == "limine" or fw_type != "efi":
+    elif efi_boot_loader == "limine":
         install_limine(efi_directory, fw_type)
-    elif efi_boot_loader == "grub" or fw_type != "efi":
+    elif efi_boot_loader == "grub":
         install_grub(efi_directory, fw_type, install_hybrid_grub)
     else:
         libcalamares.utils.debug("WARNING: the combination of "
