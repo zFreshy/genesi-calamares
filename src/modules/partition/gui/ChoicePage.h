@@ -105,6 +105,8 @@ private slots:
     /// @brief Calls onActionChanged() as needed.
     void onEraseSwapChoiceChanged();
 
+    void onConfigurationChanged();
+
     void retranslate();
 
 private:
