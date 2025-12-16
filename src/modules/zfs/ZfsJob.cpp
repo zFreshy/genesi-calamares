@@ -184,6 +184,13 @@ ZfsJob::exec()
 
     const Calamares::System* system = Calamares::System::instance();
 
+    const auto bootloader = gs->value( "packagechooser_bootloader" ).toString();
+
+    if (bootloader == "grub")
+    {
+        m_poolOptions.append( " -o compatibility=grub2" );
+    }
+
     QVariantList poolNames;
 
     // Check to ensure the list of zfs info from the partition module is available and convert it to a list
