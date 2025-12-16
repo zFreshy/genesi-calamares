@@ -96,7 +96,7 @@ def update_existing_config(default_grub, grub_config_items):
     :param default_grub: The absolute path to the grub config file
     :param grub_config_items: A dict holding the key value pairs representing the items
     """
-    
+
     default_grub_orig = default_grub + ".calamares"
     shutil.move(default_grub, default_grub_orig)
 
@@ -308,6 +308,12 @@ def run():
     partitions = libcalamares.globalstorage.value("partitions")
     root_mount_point = libcalamares.globalstorage.value("rootMountPoint")
     branding = libcalamares.globalstorage.value("branding")
+    bootloader = libcalamares.globalstorage.value("packagechooser_bootloader")
+
+    if bootloader != "grub":
+        libcalamares.utils.warning("User selected bootloader is not GRUB, skipping")
+        return
+
     if branding is None:
         distributor = None
     else:
