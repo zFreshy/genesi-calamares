@@ -74,11 +74,19 @@ def run():
                 "globalstorage[\"rootMountPoint\"] is \"{}\", which does not "
                 "exist, doing nothing".format(root_mount_point))
 
+    bootloader = libcalamares.globalstorage.value("packagechooser_bootloader")
+
     # run the command in chroot
-    shell_command = ["arch-chroot", root_mount_point, "chwd", "--autoconfigure"]
+    chwd_command = ["arch-chroot", root_mount_point, "chwd", "--autoconfigure"]
+    chwd_ai_command = ["arch-chroot", root_mount_point, "chwd", "--ai_sdk", "--autoconfigure"]
 
     try:
-        run_in_host(shell_command, line_cb)
+        run_in_host(chwd_command, line_cb)
+
+        # Install AI-SDK
+        if bootloader == "refind-ai":
+            libcalamares.utils.debug("Installing AI SDK")
+            run_in_host(chwd_ai_command, line_cb)
     except subprocess.CalledProcessError as cpe:
         return "Failed to run chwd", "chwd failed with error {!s}".format(cpe.stderr)
     except HostError as host_err:
