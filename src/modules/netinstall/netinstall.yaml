@@ -83,6 +83,7 @@
           - bluez-hid2hci
           - bluez-libs
           - bluez-utils
+          - bluez-obex
       - name: "packages management"
         description: "Packages tools"
         selected: true
