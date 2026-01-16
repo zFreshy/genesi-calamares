@@ -248,8 +248,7 @@
     - plasma-thunderbolt
     - plymouth-kcm
     - powerdevil
-    - sddm
-    - sddm-kcm
+    - plasma-login-manager
     - spectacle
     - xsettingsd
 - name: "GNOME-Desktop"
