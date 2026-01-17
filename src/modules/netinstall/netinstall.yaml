@@ -381,6 +381,7 @@
   critical: true
   packages:
     - cinnamon
+    - cinnamon-translations
     - system-config-printer
     - gnome-keyring
     - gnome-terminal
