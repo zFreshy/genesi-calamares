@@ -350,7 +350,6 @@
     - lightdm-slick-greeter
     - nemo
     - nemo-fileroller
-    - nemo-preview
     - network-manager-applet
     - sushi
     - totem
