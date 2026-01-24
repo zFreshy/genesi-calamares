@@ -366,7 +366,6 @@
     - system-config-printer
     - gnome-keyring
     - gnome-terminal
-    - blueberry
     - metacity
     - lightdm
     - lightdm-gtk-greeter
