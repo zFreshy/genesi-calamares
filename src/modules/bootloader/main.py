@@ -832,7 +832,7 @@ def install_limine(efi_directory, fw_type):
 
         # Retry using fallback option if initial attempt failed
         if exit_code != 0:
-            libcalamares.utils.warning(_("Failed to install limine bootloader, trying fallback option"))
+            libcalamares.utils.warning("Failed to install limine bootloader, trying fallback option")
 
             check_target_env_call(["limine-install", "--skip-uefi", "--fallback"])
             show_broken_uefi_warning()
