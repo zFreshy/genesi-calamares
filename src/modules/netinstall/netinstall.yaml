@@ -195,7 +195,6 @@
     - cachyos-themes-sddm
     - char-white
     - dolphin
-    - egl-wayland
     - ffmpegthumbs
     - filelight
     - fwupd
